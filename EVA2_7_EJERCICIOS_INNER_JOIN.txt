@@ -1,0 +1,700 @@
+MySQL Shell 8.0.43
+
+Copyright (c) 2016, 2025, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 9
+Server version: 8.0.43 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show tables;
+ERROR: 1046 (3D000): No database selected
+ MySQL  localhost:3306 ssl  SQL > use sakila
+Default schema set to `sakila`.
+Fetching global names, object names from `sakila` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0029 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc film;
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field                | Type                                                                | Null | Key | Default           | Extra                                         |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| film_id              | smallint unsigned                                                   | NO   | PRI | NULL              | auto_increment                                |
+| title                | varchar(128)                                                        | NO   | MUL | NULL              |                                               |
+| description          | text                                                                | YES  |     | NULL              |                                               |
+| release_year         | year                                                                | YES  |     | NULL              |                                               |
+| language_id          | tinyint unsigned                                                    | NO   | MUL | NULL              |                                               |
+| original_language_id | tinyint unsigned                                                    | YES  | MUL | NULL              |                                               |
+| rental_duration      | tinyint unsigned                                                    | NO   |     | 3                 |                                               |
+| rental_rate          | decimal(4,2)                                                        | NO   |     | 4.99              |                                               |
+| length               | smallint unsigned                                                   | YES  |     | NULL              |                                               |
+| replacement_cost     | decimal(5,2)                                                        | NO   |     | 19.99             |                                               |
+| rating               | enum('G','PG','PG-13','R','NC-17')                                  | YES  |     | G                 |                                               |
+| special_features     | set('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') | YES  |     | NULL              |                                               |
+| last_update          | timestamp                                                           | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+13 rows in set (0.0028 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc film_category;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| film_id     | smallint unsigned | NO   | PRI | NULL              |                                               |
+| category_id | tinyint unsigned  | NO   | PRI | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+3 rows in set (0.0028 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > SELECT
+                                       ->     a.title AS "Título de la Película",
+                                       ->     c.name AS "Categoría"
+                                       -> FROM
+                                       ->     film a
+                                       -> INNER JOIN
+                                       ->     film_category b ON a.film_id = b.film_id
+                                       -> INNER JOIN
+                                       ->     category c ON b.category_id = c.category_id
+                                       -> ORDER BY
+                                       -> ^C
+ MySQL  localhost:3306 ssl  sakila  SQL > select
+                                       ->     a.title as "título de la película",
+                                       ->     c.name as "categoría"
+                                       -> from
+                                       ->     film a
+                                       -> inner join
+                                       ->     film_category b on a.film_id = b.film_id
+                                       -> inner join
+                                       ->     category c on b.category_id = c.category_id
+                                       -> order by
+                                       ->     a.title limit 50;
++-----------------------------+-------------+
+| título de la película     | categoría  |
++-----------------------------+-------------+
+| ACADEMY DINOSAUR            | Documentary |
+| ACE GOLDFINGER              | Horror      |
+| ADAPTATION HOLES            | Documentary |
+| AFFAIR PREJUDICE            | Horror      |
+| AFRICAN EGG                 | Family      |
+| AGENT TRUMAN                | Foreign     |
+| AIRPLANE SIERRA             | Comedy      |
+| AIRPORT POLLOCK             | Horror      |
+| ALABAMA DEVIL               | Horror      |
+| ALADDIN CALENDAR            | Sports      |
+| ALAMO VIDEOTAPE             | Foreign     |
+| ALASKA PHANTOM              | Music       |
+| ALI FOREVER                 | Horror      |
+| ALICE FANTASIA              | Classics    |
+| ALIEN CENTER                | Foreign     |
+| ALLEY EVOLUTION             | Foreign     |
+| ALONE TRIP                  | Music       |
+| ALTER VICTORY               | Animation   |
+| AMADEUS HOLY                | Action      |
+| AMELIE HELLFIGHTERS         | Music       |
+| AMERICAN CIRCUS             | Action      |
+| AMISTAD MIDSUMMER           | New         |
+| ANACONDA CONFESSIONS        | Animation   |
+| ANALYZE HOOSIERS            | Horror      |
+| ANGELS LIFE                 | New         |
+| ANNIE IDENTITY              | Sci-Fi      |
+| ANONYMOUS HUMAN             | Sports      |
+| ANTHEM LUKE                 | Comedy      |
+| ANTITRUST TOMATOES          | Action      |
+| ANYTHING SAVANNAH           | Horror      |
+| APACHE DIVINE               | Family      |
+| APOCALYPSE FLAMINGOS        | New         |
+| APOLLO TEEN                 | Drama       |
+| ARABIA DOGMA                | Horror      |
+| ARACHNOPHOBIA ROLLERCOASTER | Horror      |
+| ARGONAUTS TOWN              | Animation   |
+| ARIZONA BANG                | Classics    |
+| ARK RIDGEMONT               | Action      |
+| ARMAGEDDON LOST             | Sci-Fi      |
+| ARMY FLINTSTONES            | Documentary |
+| ARSENIC INDEPENDENCE        | Travel      |
+| ARTIST COLDBLOODED          | Sports      |
+| ATLANTIS CAUSE              | Family      |
+| ATTACKS HATE                | Sci-Fi      |
+| ATTRACTION NEWTON           | New         |
+| AUTUMN CROW                 | Games       |
+| BABY HALL                   | Foreign     |
+| BACKLASH UNDEFEATED         | Children    |
+| BADMAN DAWN                 | Sci-Fi      |
+| BAKED CLEOPATRA             | Family      |
++-----------------------------+-------------+
+50 rows in set (0.0064 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0036 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc customer;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| customer_id | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| store_id    | tinyint unsigned  | NO   | MUL | NULL              |                                               |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   | MUL | NULL              |                                               |
+| email       | varchar(50)       | YES  |     | NULL              |                                               |
+| address_id  | smallint unsigned | NO   | MUL | NULL              |                                               |
+| active      | tinyint(1)        | NO   |     | 1                 |                                               |
+| create_date | datetime          | NO   |     | NULL              |                                               |
+| last_update | timestamp         | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+9 rows in set (0.0031 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc inventory;
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+| Field        | Type               | Null | Key | Default           | Extra                                         |
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+| inventory_id | mediumint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| film_id      | smallint unsigned  | NO   | MUL | NULL              |                                               |
+| store_id     | tinyint unsigned   | NO   | MUL | NULL              |                                               |
+| last_update  | timestamp          | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+4 rows in set (0.0028 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc film;
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field                | Type                                                                | Null | Key | Default           | Extra                                         |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| film_id              | smallint unsigned                                                   | NO   | PRI | NULL              | auto_increment                                |
+| title                | varchar(128)                                                        | NO   | MUL | NULL              |                                               |
+| description          | text                                                                | YES  |     | NULL              |                                               |
+| release_year         | year                                                                | YES  |     | NULL              |                                               |
+| language_id          | tinyint unsigned                                                    | NO   | MUL | NULL              |                                               |
+| original_language_id | tinyint unsigned                                                    | YES  | MUL | NULL              |                                               |
+| rental_duration      | tinyint unsigned                                                    | NO   |     | 3                 |                                               |
+| rental_rate          | decimal(4,2)                                                        | NO   |     | 4.99              |                                               |
+| length               | smallint unsigned                                                   | YES  |     | NULL              |                                               |
+| replacement_cost     | decimal(5,2)                                                        | NO   |     | 19.99             |                                               |
+| rating               | enum('G','PG','PG-13','R','NC-17')                                  | YES  |     | G                 |                                               |
+| special_features     | set('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') | YES  |     | NULL              |                                               |
+| last_update          | timestamp                                                           | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+13 rows in set (0.0027 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc rental;
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+| Field        | Type               | Null | Key | Default           | Extra                                         |
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+| rental_id    | int                | NO   | PRI | NULL              | auto_increment                                |
+| rental_date  | datetime           | NO   | MUL | NULL              |                                               |
+| inventory_id | mediumint unsigned | NO   | MUL | NULL              |                                               |
+| customer_id  | smallint unsigned  | NO   | MUL | NULL              |                                               |
+| return_date  | datetime           | YES  |     | NULL              |                                               |
+| staff_id     | tinyint unsigned   | NO   | MUL | NULL              |                                               |
+| last_update  | timestamp          | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+7 rows in set (0.0031 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > select
+                                       ->     a.customer_id as "id cliente",
+                                       ->     a.first_name as "nombre",
+                                       ->     a.last_name as "apellido",
+                                       ->     count(b.rental_id) as "cantidad de películas rentadas"
+                                       -> from
+                                       ->     customer a
+                                       -> inner join
+                                       ->     rental b on a.customer_id = b.customer_id
+                                       -> group by
+                                       ->     a.customer_id, a.first_name, a.last_name
+                                       -> order by
+                                       ->     "cantidad de películas rentadas" desc limit 50;
++------------+-----------+-----------+--------------------------------+
+| id cliente | nombre    | apellido  | cantidad de películas rentadas |
++------------+-----------+-----------+--------------------------------+
+|          1 | MARY      | SMITH     |                             32 |
+|          2 | PATRICIA  | JOHNSON   |                             27 |
+|          3 | LINDA     | WILLIAMS  |                             26 |
+|          4 | BARBARA   | JONES     |                             22 |
+|          5 | ELIZABETH | BROWN     |                             38 |
+|          6 | JENNIFER  | DAVIS     |                             28 |
+|          7 | MARIA     | MILLER    |                             33 |
+|          8 | SUSAN     | WILSON    |                             24 |
+|          9 | MARGARET  | MOORE     |                             23 |
+|         10 | DOROTHY   | TAYLOR    |                             25 |
+|         11 | LISA      | ANDERSON  |                             24 |
+|         12 | NANCY     | THOMAS    |                             28 |
+|         13 | KAREN     | JACKSON   |                             27 |
+|         14 | BETTY     | WHITE     |                             28 |
+|         15 | HELEN     | HARRIS    |                             32 |
+|         16 | SANDRA    | MARTIN    |                             28 |
+|         17 | DONNA     | THOMPSON  |                             21 |
+|         18 | CAROL     | GARCIA    |                             22 |
+|         19 | RUTH      | MARTINEZ  |                             24 |
+|         20 | SHARON    | ROBINSON  |                             30 |
+|         21 | MICHELLE  | CLARK     |                             35 |
+|         22 | LAURA     | RODRIGUEZ |                             22 |
+|         23 | SARAH     | LEWIS     |                             30 |
+|         24 | KIMBERLY  | LEE       |                             25 |
+|         25 | DEBORAH   | WALKER    |                             29 |
+|         26 | JESSICA   | HALL      |                             34 |
+|         27 | SHIRLEY   | ALLEN     |                             31 |
+|         28 | CYNTHIA   | YOUNG     |                             32 |
+|         29 | ANGELA    | HERNANDEZ |                             36 |
+|         30 | MELISSA   | KING      |                             34 |
+|         31 | BRENDA    | WRIGHT    |                             26 |
+|         32 | AMY       | LOPEZ     |                             29 |
+|         33 | ANNA      | HILL      |                             21 |
+|         34 | REBECCA   | SCOTT     |                             24 |
+|         35 | VIRGINIA  | GREEN     |                             32 |
+|         36 | KATHLEEN  | ADAMS     |                             27 |
+|         37 | PAMELA    | BAKER     |                             23 |
+|         38 | MARTHA    | GONZALEZ  |                             34 |
+|         39 | DEBRA     | NELSON    |                             29 |
+|         40 | AMANDA    | CARTER    |                             27 |
+|         41 | STEPHANIE | MITCHELL  |                             25 |
+|         42 | CAROLYN   | PEREZ     |                             30 |
+|         43 | CHRISTINE | ROBERTS   |                             24 |
+|         44 | MARIE     | TURNER    |                             26 |
+|         45 | JANET     | PHILLIPS  |                             27 |
+|         46 | CATHERINE | CAMPBELL  |                             34 |
+|         47 | FRANCES   | PARKER    |                             22 |
+|         48 | ANN       | EVANS     |                             17 |
+|         49 | JOYCE     | EDWARDS   |                             28 |
+|         50 | DIANE     | COLLINS   |                             35 |
++------------+-----------+-----------+--------------------------------+
+50 rows in set (0.1451 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > select
+                                       ->     a.first_name as "nombre cliente",
+                                       ->     a.last_name as "apellido cliente",
+                                       ->     d.title as "película rentada",
+                                       ->     b.rental_date as "fecha de renta"
+                                       -> from
+                                       ->     customer a
+                                       -> inner join
+                                       ->     rental b on a.customer_id = b.customer_id
+                                       -> inner join
+                                       ->     inventory c on b.inventory_id = c.inventory_id
+                                       -> inner join
+                                       ->     film d on c.film_id = d.film_id
+                                       -> order by
+                                       ->     a.last_name, b.retal_date desc;
+ERROR: 1054 (42S22): Unknown column 'b.retal_date' in 'order clause'
+ MySQL  localhost:3306 ssl  sakila  SQL > select
+                                       ->     a.first_name as "nombre cliente",
+                                       ->     a.last_name as "apellido cliente",
+                                       ->     d.title as "película rentada",
+                                       ->     b.rental_date as "fecha de renta"
+                                       -> from
+                                       ->     customer a
+                                       -> inner join
+                                       ->     rental b on a.customer_id = b.customer_id
+                                       -> inner join
+                                       ->     inventory c on b.inventory_id = c.inventory_id
+                                       -> inner join
+                                       ->     film d on c.film_id = d.film_id
+                                       -> order by
+                                       ->     a.last_name, b.rental_date desc limit 50;
++----------------+------------------+-----------------------+---------------------+
+| nombre cliente | apellido cliente | película rentada     | fecha de renta      |
++----------------+------------------+-----------------------+---------------------+
+| RAFAEL         | ABNEY            | CONVERSATION DOWNHILL | 2006-02-14 15:16:03 |
+| RAFAEL         | ABNEY            | FREDDY STORM          | 2005-08-23 00:30:26 |
+| RAFAEL         | ABNEY            | CLASH FREDDY          | 2005-08-22 00:48:23 |
+| RAFAEL         | ABNEY            | BLACKOUT PRIVATE      | 2005-08-21 10:27:21 |
+| RAFAEL         | ABNEY            | CHOCOLAT HARRY        | 2005-08-20 06:22:08 |
+| RAFAEL         | ABNEY            | STRICTLY SCARFACE     | 2005-08-17 15:40:47 |
+| RAFAEL         | ABNEY            | HOBBIT ALIEN          | 2005-08-02 10:08:40 |
+| RAFAEL         | ABNEY            | KARATE MOON           | 2005-08-02 01:19:33 |
+| RAFAEL         | ABNEY            | JUGGLER HARDLY        | 2005-08-01 01:10:33 |
+| RAFAEL         | ABNEY            | SHOCK CABIN           | 2005-07-28 07:15:32 |
+| RAFAEL         | ABNEY            | MADNESS ATTACKS       | 2005-07-12 00:27:08 |
+| RAFAEL         | ABNEY            | WANDA CHAMBER         | 2005-07-11 17:23:33 |
+| RAFAEL         | ABNEY            | GOODFELLAS SALUTE     | 2005-07-11 00:16:35 |
+| RAFAEL         | ABNEY            | CONQUERER NUTS        | 2005-07-08 02:22:45 |
+| RAFAEL         | ABNEY            | DOUBLE WRATH          | 2005-07-07 00:26:43 |
+| RAFAEL         | ABNEY            | CONEHEADS SMOOCHY     | 2005-06-20 19:41:28 |
+| RAFAEL         | ABNEY            | TRADING PINOCCHIO     | 2005-06-19 18:04:18 |
+| RAFAEL         | ABNEY            | LEGALLY SECRETARY     | 2005-06-17 03:36:02 |
+| RAFAEL         | ABNEY            | NIGHTMARE CHILL       | 2005-06-16 20:17:20 |
+| RAFAEL         | ABNEY            | POCUS PULP            | 2005-05-28 19:14:09 |
+| RAFAEL         | ABNEY            | SAGEBRUSH CLUELESS    | 2005-05-26 01:34:28 |
+| NATHANIEL      | ADAM             | ORIENT CLOSER         | 2005-08-23 21:44:27 |
+| NATHANIEL      | ADAM             | STRANGERS GRAFFITI    | 2005-08-23 11:17:26 |
+| NATHANIEL      | ADAM             | FREDDY STORM          | 2005-08-22 15:05:37 |
+| NATHANIEL      | ADAM             | BOOGIE AMELIE         | 2005-08-22 08:52:38 |
+| NATHANIEL      | ADAM             | WAR NOTTING           | 2005-08-20 14:53:43 |
+| NATHANIEL      | ADAM             | ANALYZE HOOSIERS      | 2005-08-19 21:46:10 |
+| NATHANIEL      | ADAM             | LUST LOCK             | 2005-08-19 15:05:34 |
+| NATHANIEL      | ADAM             | WARDROBE PHANTOM      | 2005-08-19 13:36:28 |
+| NATHANIEL      | ADAM             | DANCING FEVER         | 2005-08-18 23:26:40 |
+| NATHANIEL      | ADAM             | MENAGERIE RUSHMORE    | 2005-08-17 01:31:04 |
+| NATHANIEL      | ADAM             | AMADEUS HOLY          | 2005-08-01 11:25:28 |
+| NATHANIEL      | ADAM             | TRAMP OTHERS          | 2005-08-01 07:11:27 |
+| NATHANIEL      | ADAM             | ROCKY WAR             | 2005-07-29 06:02:11 |
+| NATHANIEL      | ADAM             | POSEIDON FOREVER      | 2005-07-28 12:51:22 |
+| NATHANIEL      | ADAM             | SLEUTH ORIENT         | 2005-07-28 10:23:48 |
+| NATHANIEL      | ADAM             | JASON TRAP            | 2005-07-28 07:58:27 |
+| NATHANIEL      | ADAM             | DIVORCE SHINING       | 2005-07-27 22:38:05 |
+| NATHANIEL      | ADAM             | TIGHTS DAWN           | 2005-07-27 14:25:17 |
+| NATHANIEL      | ADAM             | NEMO CAMPUS           | 2005-07-09 08:35:05 |
+| NATHANIEL      | ADAM             | ENDING CROWDS         | 2005-07-08 14:36:51 |
+| NATHANIEL      | ADAM             | CHASING FIGHT         | 2005-07-07 18:04:16 |
+| NATHANIEL      | ADAM             | HANGING DEEP          | 2005-07-06 10:49:30 |
+| NATHANIEL      | ADAM             | SOMETHING DUCK        | 2005-07-06 10:47:35 |
+| NATHANIEL      | ADAM             | GUYS FALCON           | 2005-06-20 05:17:22 |
+| NATHANIEL      | ADAM             | SHEPHERD MIDSUMMER    | 2005-06-19 14:51:55 |
+| NATHANIEL      | ADAM             | NOON PAPI             | 2005-05-30 00:27:57 |
+| NATHANIEL      | ADAM             | GATHERING CALENDAR    | 2005-05-27 21:17:08 |
+| NATHANIEL      | ADAM             | KISS GLORY            | 2005-05-25 22:02:30 |
+| KATHLEEN       | ADAMS            | HEDWIG ALTER          | 2005-08-23 08:42:40 |
++----------------+------------------+-----------------------+---------------------+
+50 rows in set (0.2134 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc store;
++------------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field            | Type              | Null | Key | Default           | Extra                                         |
++------------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| store_id         | tinyint unsigned  | NO   | PRI | NULL              | auto_increment                                |
+| manager_staff_id | tinyint unsigned  | NO   | UNI | NULL              |                                               |
+| address_id       | smallint unsigned | NO   | MUL | NULL              |                                               |
+| last_update      | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++------------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+4 rows in set (0.0038 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc inventory,
+                                       -> ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',' at line 1
+ MySQL  localhost:3306 ssl  sakila  SQL > desc inventory;
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+| Field        | Type               | Null | Key | Default           | Extra                                         |
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+| inventory_id | mediumint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| film_id      | smallint unsigned  | NO   | MUL | NULL              |                                               |
+| store_id     | tinyint unsigned   | NO   | MUL | NULL              |                                               |
+| last_update  | timestamp          | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+4 rows in set (0.0028 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc film;
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field                | Type                                                                | Null | Key | Default           | Extra                                         |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| film_id              | smallint unsigned                                                   | NO   | PRI | NULL              | auto_increment                                |
+| title                | varchar(128)                                                        | NO   | MUL | NULL              |                                               |
+| description          | text                                                                | YES  |     | NULL              |                                               |
+| release_year         | year                                                                | YES  |     | NULL              |                                               |
+| language_id          | tinyint unsigned                                                    | NO   | MUL | NULL              |                                               |
+| original_language_id | tinyint unsigned                                                    | YES  | MUL | NULL              |                                               |
+| rental_duration      | tinyint unsigned                                                    | NO   |     | 3                 |                                               |
+| rental_rate          | decimal(4,2)                                                        | NO   |     | 4.99              |                                               |
+| length               | smallint unsigned                                                   | YES  |     | NULL              |                                               |
+| replacement_cost     | decimal(5,2)                                                        | NO   |     | 19.99             |                                               |
+| rating               | enum('G','PG','PG-13','R','NC-17')                                  | YES  |     | G                 |                                               |
+| special_features     | set('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') | YES  |     | NULL              |                                               |
+| last_update          | timestamp                                                           | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+13 rows in set (0.0029 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > select
+                                       ->     a.store_id as "id tienda",
+                                       ->     c.title as "título de la película"
+                                       -> from
+                                       ->     store a
+                                       -> inner join
+                                       ->     inventory b on a.store_id = b.store_id
+                                       -> inner join
+                                       ->     film c on b.film_id = c.film_id
+                                       -> order by
+                                       ->     a.store_id, c.title limit 50;
++-----------+-----------------------+
+| id tienda | título de la película |
++-----------+-----------------------+
+|         1 | ACADEMY DINOSAUR      |
+|         1 | ACADEMY DINOSAUR      |
+|         1 | ACADEMY DINOSAUR      |
+|         1 | ACADEMY DINOSAUR      |
+|         1 | AFFAIR PREJUDICE      |
+|         1 | AFFAIR PREJUDICE      |
+|         1 | AFFAIR PREJUDICE      |
+|         1 | AFFAIR PREJUDICE      |
+|         1 | AGENT TRUMAN          |
+|         1 | AGENT TRUMAN          |
+|         1 | AGENT TRUMAN          |
+|         1 | AIRPLANE SIERRA       |
+|         1 | AIRPLANE SIERRA       |
+|         1 | ALABAMA DEVIL         |
+|         1 | ALABAMA DEVIL         |
+|         1 | ALABAMA DEVIL         |
+|         1 | ALADDIN CALENDAR      |
+|         1 | ALADDIN CALENDAR      |
+|         1 | ALADDIN CALENDAR      |
+|         1 | ALADDIN CALENDAR      |
+|         1 | ALAMO VIDEOTAPE       |
+|         1 | ALAMO VIDEOTAPE       |
+|         1 | ALAMO VIDEOTAPE       |
+|         1 | ALAMO VIDEOTAPE       |
+|         1 | ALASKA PHANTOM        |
+|         1 | ALASKA PHANTOM        |
+|         1 | ALASKA PHANTOM        |
+|         1 | ALIEN CENTER          |
+|         1 | ALIEN CENTER          |
+|         1 | ALLEY EVOLUTION       |
+|         1 | ALLEY EVOLUTION       |
+|         1 | ALONE TRIP            |
+|         1 | ALONE TRIP            |
+|         1 | ALONE TRIP            |
+|         1 | ALTER VICTORY         |
+|         1 | ALTER VICTORY         |
+|         1 | ALTER VICTORY         |
+|         1 | AMADEUS HOLY          |
+|         1 | AMADEUS HOLY          |
+|         1 | AMADEUS HOLY          |
+|         1 | AMADEUS HOLY          |
+|         1 | AMELIE HELLFIGHTERS   |
+|         1 | AMELIE HELLFIGHTERS   |
+|         1 | AMELIE HELLFIGHTERS   |
+|         1 | AMERICAN CIRCUS       |
+|         1 | AMERICAN CIRCUS       |
+|         1 | AMISTAD MIDSUMMER     |
+|         1 | AMISTAD MIDSUMMER     |
+|         1 | AMISTAD MIDSUMMER     |
+|         1 | AMISTAD MIDSUMMER     |
++-----------+-----------------------+
+50 rows in set (0.0728 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0028 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc customer;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| customer_id | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| store_id    | tinyint unsigned  | NO   | MUL | NULL              |                                               |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   | MUL | NULL              |                                               |
+| email       | varchar(50)       | YES  |     | NULL              |                                               |
+| address_id  | smallint unsigned | NO   | MUL | NULL              |                                               |
+| active      | tinyint(1)        | NO   |     | 1                 |                                               |
+| create_date | datetime          | NO   |     | NULL              |                                               |
+| last_update | timestamp         | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+9 rows in set (0.0027 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc rental;
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+| Field        | Type               | Null | Key | Default           | Extra                                         |
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+| rental_id    | int                | NO   | PRI | NULL              | auto_increment                                |
+| rental_date  | datetime           | NO   | MUL | NULL              |                                               |
+| inventory_id | mediumint unsigned | NO   | MUL | NULL              |                                               |
+| customer_id  | smallint unsigned  | NO   | MUL | NULL              |                                               |
+| return_date  | datetime           | YES  |     | NULL              |                                               |
+| staff_id     | tinyint unsigned   | NO   | MUL | NULL              |                                               |
+| last_update  | timestamp          | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++--------------+--------------------+------+-----+-------------------+-----------------------------------------------+
+7 rows in set (0.0034 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc film;
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field                | Type                                                                | Null | Key | Default           | Extra                                         |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| film_id              | smallint unsigned                                                   | NO   | PRI | NULL              | auto_increment                                |
+| title                | varchar(128)                                                        | NO   | MUL | NULL              |                                               |
+| description          | text                                                                | YES  |     | NULL              |                                               |
+| release_year         | year                                                                | YES  |     | NULL              |                                               |
+| language_id          | tinyint unsigned                                                    | NO   | MUL | NULL              |                                               |
+| original_language_id | tinyint unsigned                                                    | YES  | MUL | NULL              |                                               |
+| rental_duration      | tinyint unsigned                                                    | NO   |     | 3                 |                                               |
+| rental_rate          | decimal(4,2)                                                        | NO   |     | 4.99              |                                               |
+| length               | smallint unsigned                                                   | YES  |     | NULL              |                                               |
+| replacement_cost     | decimal(5,2)                                                        | NO   |     | 19.99             |                                               |
+| rating               | enum('G','PG','PG-13','R','NC-17')                                  | YES  |     | G                 |                                               |
+| special_features     | set('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') | YES  |     | NULL              |                                               |
+| last_update          | timestamp                                                           | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+13 rows in set (0.0030 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc staff_list;
++----------+------------------+------+-----+---------+-------+
+| Field    | Type             | Null | Key | Default | Extra |
++----------+------------------+------+-----+---------+-------+
+| ID       | tinyint unsigned | NO   |     | 0       |       |
+| name     | varchar(91)      | YES  |     | NULL    |       |
+| address  | varchar(50)      | NO   |     | NULL    |       |
+| zip code | varchar(10)      | YES  |     | NULL    |       |
+| phone    | varchar(20)      | NO   |     | NULL    |       |
+| city     | varchar(50)      | NO   |     | NULL    |       |
+| country  | varchar(50)      | NO   |     | NULL    |       |
+| SID      | tinyint unsigned | NO   |     | NULL    |       |
++----------+------------------+------+-----+---------+-------+
+8 rows in set (0.0038 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc staff;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| staff_id    | tinyint unsigned  | NO   | PRI | NULL              | auto_increment                                |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   |     | NULL              |                                               |
+| address_id  | smallint unsigned | NO   | MUL | NULL              |                                               |
+| picture     | blob              | YES  |     | NULL              |                                               |
+| email       | varchar(50)       | YES  |     | NULL              |                                               |
+| store_id    | tinyint unsigned  | NO   | MUL | NULL              |                                               |
+| active      | tinyint(1)        | NO   |     | 1                 |                                               |
+| username    | varchar(16)       | NO   |     | NULL              |                                               |
+| password    | varchar(40)       | YES  |     | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+11 rows in set (0.0028 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > select
+                                       -> a.store_id as "id tienda",
+                                       -> c.title as "título de la pelicula"
+                                       -> from
+                                       ->     store a
+                                       -> inner join
+                                       ->     inventory b on a.store_id = b.store_id
+                                       -> inner join
+                                       ->     film c on b.film_id = a.film_id
+                                       -> orderby
+                                       -> a.store_id, c.title;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'orderby
+a.store_id, c.title' at line 10
+ MySQL  localhost:3306 ssl  sakila  SQL > select a.store_id as "id tienda", c.title as "título de la pelicula" from     store a inner join     inventory b on a.store_id = b.store_id inner join     film c on c.film_id = a.film_id orderby a.store_id, c.title limit 50;
+
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'orderby a.store_id, c.title limit 50' at line 1
+ MySQL  localhost:3306 ssl  sakila  SQL > select
+                                       -> a.first_name as "nombre cliente",
+                                       -> a.last_name as "apellido cliente",
+                                       -> d.title as "película rentada",
+                                       -> b.rental_date as "fecha de renta",
+                                       -> e.first_name as "nombre empleado",
+                                       -> e.last_name as "apellido empleado"
+                                       -> from
+                                       -> customer a
+                                       -> inner join
+                                       -> rental b on a.customer_id = b.customer_id
+                                       -> inner join
+                                       -> inventory c on b.inventory_id = c.inventory_id
+                                       -> inner join
+                                       -> film d on c.film_id = d.film_id
+                                       -> inner join
+                                       -> staff e on b.staff_id = e.staff_id
+                                       -> order by
+                                       -> b.rental_date desc limit 50;
++----------------+------------------+------------------------+---------------------+-----------------+-------------------+
+| nombre cliente | apellido cliente | película rentada      | fecha de renta      | nombre empleado | apellido empleado |
++----------------+------------------+------------------------+---------------------+-----------------+-------------------+
+| JOE            | GILLILAND        | AMISTAD MIDSUMMER      | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| CARMEN         | OWENS            | AFFAIR PREJUDICE       | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| CATHY          | SPENCER          | HOLES BRANNIGAN        | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| ELMER          | NOE              | FALCON VOLUME          | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| JESSIE         | BANKS            | DANCES NONE            | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| MIGUEL         | BETANCOURT       | FAMILY SWEET           | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| SARAH          | LEWIS            | DIVINE RESURRECTION    | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| BRANDON        | HUEY             | ACE GOLDFINGER         | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| GWENDOLYN      | MAY              | FLYING HOOK            | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| SONIA          | GREGORY          | BERETS AGENT           | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| GAIL           | KNIGHT           | CHASING FIGHT          | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| LEE            | HAWKS            | DETECTIVE VISION       | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| GUY            | BROWNLEE         | ENOUGH RAGING          | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| TRACY          | COLE             | ALI FOREVER            | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| KYLE           | SPURLOCK         | DANCES NONE            | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| FLORENCE       | WOODS            | BLADE POLISH           | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| JERRY          | JORDON           | GUNFIGHT MOON          | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| LAWRENCE       | LAWTON           | HALF OUTFIELD          | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| DIANNE         | SHELTON          | CAT CONEHEADS          | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| TERRY          | GRISSOM          | FAMILY SWEET           | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| WILLIE         | MARKHAM          | CENTER DINOSAUR        | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| SERGIO         | STANFIELD        | CAMELOT VACATION       | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| DUSTIN         | GILLETTE         | CROOKED FROGMEN        | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| CLAUDIA        | FULLER           | ENCINO ELF             | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| ALLISON        | STANLEY          | GRAPES FURY            | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| CHRISTIAN      | JUNG             | HALF OUTFIELD          | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| LEONARD        | SCHOFIELD        | FIGHT JAWBREAKER       | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| BILL           | GAVIN            | GLEAMING JAWBREAKER    | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| ANNETTE        | OLSON            | DEER VIRGINIAN         | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| FREDDIE        | DUGGAN           | GHOST GROUNDHOG        | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| CECIL          | VINES            | AMADEUS HOLY           | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| BARRY          | LOVELACE         | CREATURES SHAKESPEARE  | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| NORMAN         | CURRIER          | HARRY IDAHO            | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| PEGGY          | MYERS            | CLUB GRAFFITI          | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| BETTY          | WHITE            | GROUNDHOG UNCUT        | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| CHRIS          | BROTHERS         | CINCINATTI WHISPERER   | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| SONIA          | GREGORY          | FRIDA SLIPPER          | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| LAURIE         | LAWRENCE         | HAUNTED ANTITRUST      | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| FLORENCE       | WOODS            | CLUB GRAFFITI          | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| MARION         | SNYDER           | FORRESTER COMANCHEROS  | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| ZACHARY        | HITE             | FROST HEAD             | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| LOUISE         | JENKINS          | FRISCO FORREST         | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| MARGARET       | MOORE            | DEEP CRUSADE           | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| ANA            | BRADLEY          | HAPPINESS UNITED       | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| CURTIS         | IRBY             | GORGEOUS BINGO         | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| ELIZABETH      | BROWN            | GABLES METROPOLIS      | 2006-02-14 15:16:03 | Jon             | Stephens          |
+| SCOTT          | SHELLEY          | GRAIL FRANKENSTEIN     | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| ENRIQUE        | FORSYTHE         | GUNFIGHT MOON          | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| STACEY         | MONTGOMERY       | DETAILS PACKER         | 2006-02-14 15:16:03 | Mike            | Hillyer           |
+| EMILY          | DIAZ             | CONNECTION MICROCOSMOS | 2006-02-14 15:16:03 | Mike            | Hillyer           |
++----------------+------------------+------------------------+---------------------+-----------------+-------------------+
+50 rows in set (0.5698 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL >
